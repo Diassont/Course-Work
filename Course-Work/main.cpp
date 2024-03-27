@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <Windows.h>
+#include <vector>
 
 using namespace std;
 
@@ -14,6 +15,27 @@ void menu() {
     cout << " 1. Мета та правила гри\n";
     cout << " 2. Розпочати гру\n";
     cout << " 3. Закінчити гру\n";
+}
+
+//Функція для виведення дошки на екран
+void board_out(const vector<vector<char>>& board) {
+    for (int i = 0; i < 3; ++i) {
+        for (int t = 0; t < 3; ++t) {
+            if (t != 0) {
+                cout << "|";
+            }
+            if (board[i][t] == ' ') {
+                cout << "   ";
+            }
+            else {
+                cout << " " << board[i][t] << " ";
+            }
+        }
+        cout << endl;
+        if (i != 2) {
+            cout << "---|---|---\n";
+        }
+    }
 }
 
 int main() {
@@ -38,7 +60,13 @@ int main() {
         }
 
         case 2: {
-            // Код для гри
+            vector<vector<char>> board(3, vector<char>(3));
+            for (int i = 0; i < 3; ++i) {
+                for (int t = 0; t < 3; ++t) {
+                    board[i][t] = ' ';
+                }
+            }
+            board_out(board);
             break;
         }
 
