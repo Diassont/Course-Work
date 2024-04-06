@@ -17,15 +17,20 @@ void menu() {
     cout << " 3. Закінчити гру\n";
 }
 
-//Функція для виведення дошки на екран
-void board_out(const vector<vector<char>>& board) {
+//Функція для виведення гральної дошки
+void board_out(const vector<vector<char>>& board, bool show_numbers) {
     for (int i = 0; i < 3; ++i) {
         for (int t = 0; t < 3; ++t) {
             if (t != 0) {
                 cout << "|";
             }
             if (board[i][t] == ' ') {
-                cout << "   ";
+                if (show_numbers) {
+                    cout << " " << (i * 3 + t + 1) << " ";
+                }
+                else {
+                    cout << "   ";
+                }
             }
             else {
                 cout << " " << board[i][t] << " ";
@@ -56,28 +61,50 @@ int main() {
             cout << " 2. Гравцi по черзі роблять хід, вводячи номер комірки (від 1 до 9), куди хочуть поставити свій символ." << endl;
             cout << " 3. Програма перевіряє, чи вільна комірка, чи не вийшов гравець за межі поля, чи не використовується вже цей символ." << endl;
             cout << " 4. Перемагає той, хто першим складе виграшну комбінацію." << endl;
-            break;
+        break;
         }
 
         case 2: {
+            // Створення гральної дошки
             vector<vector<char>> board(3, vector<char>(3));
             for (int i = 0; i < 3; ++i) {
                 for (int t = 0; t < 3; ++t) {
                     board[i][t] = ' ';
                 }
             }
-            board_out(board);
-            break;
+
+            // Обирання символів гравцями
+            char player1, player2, currentPlayer;
+            cout << "Гравець 1, оберіть свій символ (X або O): ";
+            cin >> player1;
+
+            // Перевірка на коректність вибору символу гравця 1
+            while (player1 != 'X' && player1 != 'O') {
+                cout << "Неправильний символ! Оберіть X або O: ";
+                cin >> player1;
+            }
+
+            // Визначення символу для гравця 2
+            player2 = (player1 == 'X') ? 'O' : 'X';
+            currentPlayer = player1;
+
+            // Вивід дошки з номерами клітин перед початком гри
+            cout << endl << "Гральна дошка:\n";
+            board_out(board, true);
+            cout << endl;
+
+
+        break;
         }
 
         case 3: {
             game = false;
-            break;
+        break;
         }
 
         default: {
             cout << "Некоректний вибір! Спробуйте ще раз.\n";
-            break;
+        break;
         }
         }
     }
