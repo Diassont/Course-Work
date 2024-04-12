@@ -93,7 +93,105 @@ int main() {
             board_out(board, true);
             cout << endl;
 
+            while (true) {
+                int number;
+                cout << "Гравець " << currentPlayer << ", введіть свій хід (1-9): ";
+                cin >> number;
+                if (number < 1 || number > 9 || board[(number - 1) / 3][(number - 1) % 3] != ' ') {
+                    cout << "Неправильний хід, спробуйте ще раз." << endl;
+                    continue;
+                }
 
+                // Вивід дошки після кожного ходу
+                board[(number - 1) / 3][(number - 1) % 3] = currentPlayer;
+                board_out(board, false);
+
+                bool win = false;
+
+                // Перевірка рядків
+                for (int i = 0; i < 3; ++i) {
+                    if (board[i][0] == currentPlayer && board[i][1] == currentPlayer && board[i][2] == currentPlayer) {
+                        win = true;
+                        break;
+                    }
+                }
+
+                // Перевірка стовпців
+                for (int i = 0; i < 3; ++i) {
+                    if (board[0][i] == currentPlayer && board[1][i] == currentPlayer && board[2][i] == currentPlayer) {
+                        win = true;
+                        break;
+                    }
+                }
+
+                // Перевірка діагоналей
+                if (board[0][0] == currentPlayer && board[1][1] == currentPlayer && board[2][2] == currentPlayer) {
+                    win = true;
+                }
+                if (board[0][2] == currentPlayer && board[1][1] == currentPlayer && board[2][0] == currentPlayer) {
+                    win = true;
+                }
+
+                // Якщо є переможець
+                if (win) {
+                    cout << "Гравець " << currentPlayer << " переміг!" << endl;
+                    cout << "Грати ще раз? (Так/Ні): ";
+                    string answer;
+                    cin >> answer;
+                    if (answer != "Так") {
+                        game = false;
+                        break;
+                    }
+
+                    // Очищення дошки
+                    for (int i = 0; i < 3; ++i) {
+                        for (int t = 0; t < 3; ++t) {
+                            board[i][t] = ' ';
+                        }
+                    }
+
+                    // Зміна гравця
+                    currentPlayer = (currentPlayer == player1) ? player2 : player1;
+                    continue;
+                }
+
+                // Перевірка на нічию
+                bool draw = true;
+                for (int i = 0; i < 3; ++i) {
+                    for (int t = 0; t < 3; ++t) {
+                        if (board[i][t] == ' ') {
+                            draw = false;
+                            break;
+                        }
+                    }
+                }
+
+                // Якщо нічия
+                if (draw) {
+                    cout << "Нічия!" << endl;
+                    cout << "Грати ще раз? (Так/Ні): ";
+                    string answer;
+                    cin >> answer;
+                    if (answer != "Так") {
+                        game = false;
+                        break;
+                    }
+
+                    // Очищення дошки
+                    for (int i = 0; i < 3; ++i) {
+                        for (int t = 0; t < 3; ++t) {
+                            board[i][t] = ' ';
+                        }
+                    }
+
+                    // Зміна гравця
+                    currentPlayer = (currentPlayer == player1) ? player2 : player1;
+                    continue;
+                }
+
+                // Зміна ходу наступного гравця
+                currentPlayer = (currentPlayer == player1) ? player2 : player1;
+            }
         break;
         }
 
@@ -108,5 +206,4 @@ int main() {
         }
         }
     }
-    return 0;
 }
